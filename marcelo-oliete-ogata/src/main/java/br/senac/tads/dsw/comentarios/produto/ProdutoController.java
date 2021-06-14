@@ -30,13 +30,12 @@ import br.senac.tads.dsw.comentarios.comentario.ComentarioRepository;
 public class ProdutoController {
 
     private final ProdutoRepository repository;
-    
-     @Autowired
+
+    @Autowired
     private ComentarioRepository cRepository;
 
-     public ProdutoController(ProdutoRepository repository, ComentarioRepository repositoryComentario) {
-        this.repository = repository;
-        this.repositoryComentario = repositoryComentario;
+    public ProdutoController(ProdutoRepository repository, ComentarioRepository repositoryComentario) {
+        this.repository = repository;        
     }
 
     @GetMapping
@@ -48,40 +47,40 @@ public class ProdutoController {
     @GetMapping("/{id}")
     public ModelAndView mostrarDetalhes(@PathVariable("id") Integer id, RedirectAttributes redirAttr) {
         Optional<Produto> optProduto = repository.findById(id);
-         ArrayList<Comentario> comentario = (ArrayList<Comentario>) cRepository.findByProdutoId();
+        ArrayList<Comentario> comentario = (ArrayList<Comentario>) cRepository.findByProdutoId();
         if (optProduto.isEmpty()) {
             redirAttr.addFlashAttribute("msgErro", "Produto com ID " + id + " não achou.");
             return new ModelAndView("redirect:/produtos");
         }
         return new ModelAndView("produtos/detalhes")
-                           .addObject("item", optProduto.get())
-                .addObject("comentario",comentario)
-                .addObject("formC",new Comentario());
+                .addObject("item", optProduto.get())
+                .addObject("comentario", comentario)
+                .addObject("formC", new Comentario());
     }
-    
+
     @PostMapping("/Salvar-Comentario/{prodid}")
     public ModelAndView recebeComentario(@PathVariable("prodid") Integer id,
-       @Valid @ModelAttribute("formC") Comentario comentario,
-       BindingResult bindingResult,
-       RedirectAttributes redirAttr){
-          Optional<Produto> optProduto = repository.findById(id);
-          ArrayList<Comentario> coment = (ArrayList<Comentario>) cRepository.findByProdutoId();
-        
-        if(bindingResult.hasErrors()){
-           return new ModelAndView("produtos/detalhes")
-                   .addObject("item", optProduto.get())
-                   .addObject("comentario",coment);
+            @Valid @ModelAttribute("formC") Comentario comentario,
+            BindingResult bindingResult,
+            RedirectAttributes redirAttr) {
+        Optional<Produto> optProduto = repository.findById(id);
+        ArrayList<Comentario> coment = (ArrayList<Comentario>) cRepository.findByProdutoId();
+
+        if (bindingResult.hasErrors()) {
+            return new ModelAndView("produtos/detalhes")
+                    .addObject("item", optProduto.get())
+                    .addObject("comentario", coment);
         }
-     
-       comentario.setProduto(optProduto.get()); 
-       comentario.setDataHorario(LocalDateTime.of(LocalDate.now(), LocalTime.now()));
+
+        comentario.setProduto(optProduto.get());
+        comentario.setDataHorario(LocalDateTime.of(LocalDate.now(), LocalTime.now()));
         cRepository.save(comentario);
-     
-       ModelAndView mv = new ModelAndView("redirect:/produtos/"+id+"#comentario");
-       redirAttr.addFlashAttribute("comentario",comentario);      
-        redirAttr.addFlashAttribute("Msgsucesso","c");
-       
-       return mv;
+
+        ModelAndView mv = new ModelAndView("redirect:/produtos/" + id + "#comentario");
+        redirAttr.addFlashAttribute("comentario", comentario);
+        redirAttr.addFlashAttribute("Msgsucesso", "c");
+
+        return mv;
     }
 
 }

@@ -44,8 +44,8 @@ public class Produto {
 
     @Column
     private String imagemUrl;
-    
-    @OneToMany(mappedBy = "produto",fetch = FetchType.LAZY)
+
+    @OneToMany(mappedBy = "produto", fetch = FetchType.LAZY)
     private List<Comentario> comentarios;
 
     public Produto() {
@@ -58,8 +58,8 @@ public class Produto {
         this.preco = preco;
         this.imagemUrl = imagemUrl;
     }
-    
-       public List<Comentario> getComentarios() {
+
+    public List<Comentario> getComentarios() {
         return comentarios;
     }
 
@@ -106,10 +106,10 @@ public class Produto {
     public void setImagemUrl(String imagemUrl) {
         this.imagemUrl = imagemUrl;
     }
-    
-      @Override
+
+    @Override
     public String toString() {
         return "Produto{" + "id=" + id + ", nome=" + nome + ", descricao=" + descricao + ", preco=" + preco + ", imagemUrl=" + imagemUrl + '}';
-    }	
-    
+    }
+
 }
