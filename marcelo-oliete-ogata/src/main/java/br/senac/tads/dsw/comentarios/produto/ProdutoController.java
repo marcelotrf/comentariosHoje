@@ -34,8 +34,8 @@ public class ProdutoController {
     @Autowired
     private ComentarioRepository cRepository;
 
-    public ProdutoController(ProdutoRepository repository, ComentarioRepository repositoryComentario) {
-        this.repository = repository;        
+    public ProdutoController(ProdutoRepository repository) {
+        this.repository = repository;
     }
 
     @GetMapping
@@ -70,6 +70,7 @@ public class ProdutoController {
             return new ModelAndView("produtos/detalhes")
                     .addObject("item", optProduto.get())
                     .addObject("comentario", coment);
+
         }
 
         comentario.setProduto(optProduto.get());

@@ -26,9 +26,7 @@ public class ComentariosApplication implements CommandLineRunner {
     @Transactional
     public void run(String... args) throws Exception {
 
-        if (produtoRepository.count() == 0) {
-            Produto a = new Produto("Leite", "Descrição leite", new BigDecimal("3.53"), "/img/produto1.jpg");
-            Produto b = new Produto("Pizza Mussarela", "Descrição pizza", new BigDecimal("49.67"), "/img/produto2.jpg");
+        if (produtoRepository.count() == 0) {            
             produtoRepository.save(new Produto("Leite", "Descrição leite", new BigDecimal("3.53"), "/img/produto1.jpg"));
             produtoRepository.save(new Produto("Pizza Mussarela", "Descrição pizza", new BigDecimal("49.67"), "/img/produto2.jpg"));
         }
