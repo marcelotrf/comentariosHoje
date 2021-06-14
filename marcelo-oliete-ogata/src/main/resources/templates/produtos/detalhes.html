@@ -31,30 +31,49 @@
                 </div>
             </div>
             <hr />
-            
-            <div class="container col-md-8">
-            
-            <h2>Incluir Comentario</h2>
-            
-            <form>
-				  <div class="form-row">
-				    <div class="form-group col-md-6">
-				      <label for="inputEmail4">Nome</label>
-				      <input type="text" class="form-control" id="nome" placeholder="Email">
-				    </div>
-				    <div class="form-group col-md-6">
-				      <label for="inputPassword4">E-mail</label>
-				      <input type="email" class="form-control" id="email" placeholder="E-mail">
-				    </div>
-				  </div>
-				  
-				  <div class="form-group">
-				    <label for="exampleFormControlTextarea1">Comentário</label>
-				    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-				  </div>
-				  
-  					<button type="submit" class="btn btn-primary col-md-12 ">Salvar os dados</button>
-          	</form>
+
+            <div class="container jumbotron">
+
+                <form method="post" th:action="@{/produtos/Salvar-Comentario/{id}(id=${item.id})}" th:object="${formC}">
+                    <div class="row ">
+                        <div th:if="${Msgsucesso!= null}" class="alert alert-success col-md-12 text-center">Comentário adicionado com sucesso</div>
+                        <div th:if="${#fields.hasErrors}" class="alert alert-danger col-md-12 text-center"> Erro ao adicionar um comentário</div>
+
+
+                        <div class="col-md-5 form-group">
+                            <label>Nome:</label>
+                            <input class="form-control" type="text" placeholder="Nome completo" name="nome" th:field="*{nome}" th:classappend="${#fields.hasErrors('nome')}? is-invalid" > 
+                            <span  th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" th:classappend="${#fields.hasErrors('nome')}? invalid-feedback">>ERRO</span>
+                        </div>
+                        <div class="col-md-5 form-group">
+                            <label>E-mail:</label>
+                            <input class="form-control" type="text" placeholder="E-mail Válido" name="email" th:field="*{email}" th:classappend="${#fields.hasErrors('email')}? is-invalid">
+                            <span  th:if="${#fields.hasErrors('email')}" th:errors="*{email}" th:classappend="${#fields.hasErrors('email')}? invalid-feedback">ERRO</span>
+                        </div>
+
+                    </div>
+                    <div>
+                        <label>Comentário:</label>
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="comentario" th:field="*{comentario}" th:classappend="${#fields.hasErrors('comentario')}? is-invalid"></textarea>
+                        <span  th:if="${#fields.hasErrors('comentario')}" th:errors="*{comentario}" th:classappend="${#fields.hasErrors('comentario')}? invalid-feedback">ERRO</span>
+                    </div>
+                    <div>
+                        <input type="submit" class="btn btn-primary">
+                    </div>
+                </form>
+
+
+
+            </div>
+            <div  class="container" id="comentarios" th:each="c : ${comentario}" style="margin-bottom: 25px">
+                <div class="row" th:if="${item.id == c.produto.id}">
+                    <p style="margin-right: 10px;" th:text="${c.nome}"></p>
+                    ( <p th:text="${c.email}"></p> ) ---
+                    <p th:text="${#temporals.format(c.dataHorario, 'dd/MM/yyyy -- HH:mm')}"></p> 
+                    <div class="border col-md-12" style="border-bottom: 10px;">
+                        <p th:text="${c.comentario}"></p>
+                    </div>
+                </div>
             </div>
         </div>        
     </body>

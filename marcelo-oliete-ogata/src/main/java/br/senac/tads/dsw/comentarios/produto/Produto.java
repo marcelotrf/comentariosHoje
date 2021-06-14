@@ -5,12 +5,13 @@
  */
 package br.senac.tads.dsw.comentarios.produto;
 
+import br.senac.tads.dsw.comentarios.comentario.Comentario;
 import java.math.BigDecimal;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,10 +20,6 @@ import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import br.senac.tads.dsw.comentarios.comentario.Comentario;
 
 @Entity
 public class Produto {
@@ -48,8 +45,7 @@ public class Produto {
     @Column
     private String imagemUrl;
     
-    @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL)
-    @JsonIgnoreProperties("produto")
+    @OneToMany(mappedBy = "produto",fetch = FetchType.LAZY)
     private List<Comentario> comentarios;
 
     public Produto() {
@@ -61,6 +57,14 @@ public class Produto {
         this.descricao = descricao;
         this.preco = preco;
         this.imagemUrl = imagemUrl;
+    }
+    
+       public List<Comentario> getComentarios() {
+        return comentarios;
+    }
+
+    public void setComentarios(List<Comentario> comentarios) {
+        this.comentarios = comentarios;
     }
 
     public Integer getId() {
@@ -102,13 +106,10 @@ public class Produto {
     public void setImagemUrl(String imagemUrl) {
         this.imagemUrl = imagemUrl;
     }
-
-	public List<Comentario> getComentarios() {
-		return comentarios;
-	}
-
-	public void setComentarios(List<Comentario> comentarios) {
-		this.comentarios = comentarios;
-	}
+    
+      @Override
+    public String toString() {
+        return "Produto{" + "id=" + id + ", nome=" + nome + ", descricao=" + descricao + ", preco=" + preco + ", imagemUrl=" + imagemUrl + '}';
+    }	
     
 }
